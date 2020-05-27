@@ -6,9 +6,9 @@ object Environment {
     const val baseEndpoint: String = "https://gateway.marvel.com:443/"
 
     /// Public API key
-    const val publicAPIKey: String = ""
+    const val publicAPIKey: String = "public"
 
     /// Private API key
-    const val privateAPIKey: String = ""
+    const val privateAPIKey: String = "private"
 
 }
