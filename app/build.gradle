@@ -52,7 +52,7 @@ sonarqube {
     properties {
         property "sonar.projectName", "marvel-characters"
         property "sonar.projectKey", "d28ead8486925b63f4150f96d44707dc29b88887"
-        property "sonar.tests", ["src/test/java"]
+        property "sonar.tests", ["src/test/java", "src/test/koltin"]
         property "sonar.test.inclusions", "**/*Test*/**"
         property "sonar.sourceEncoding", "UTF-8"
         property "sonar.sources", "src/main/java"
