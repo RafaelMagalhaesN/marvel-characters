@@ -7,8 +7,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 object RetrofitFactory {
 
-    fun build(client: OkHttpClient): Retrofit = Retrofit.Builder()
-        .baseUrl(Environment.baseEndpoint)
+    fun build(client: OkHttpClient, baseUrl: String = Environment.baseEndpoint): Retrofit =
+        Retrofit.Builder()
+        .baseUrl(baseUrl)
         .client(client)
         .addConverterFactory(MoshiConverterFactory.create().asLenient())
         .build()

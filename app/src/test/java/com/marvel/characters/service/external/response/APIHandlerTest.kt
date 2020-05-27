@@ -6,8 +6,8 @@ import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
-import okhttp3.MediaType
-import okhttp3.ResponseBody
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
@@ -48,10 +48,8 @@ class APIHandlerTest {
     fun `test when api handler has HttpException`() {
         runBlockingTest {
             val httpResponse = callAPI(testCoroutineDispatcher) {
-                throw HttpException(Response.error<Any>(404, ResponseBody.create(
-                    MediaType.get("application/json"),
-                    "{}"
-                )))
+                throw HttpException(Response.error<Any>(404,
+                    "{}".toResponseBody("application/json".toMediaType())))
             }
 
             assertEquals(ResponseWrapper.Error(code = 404), httpResponse)

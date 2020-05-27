@@ -10,8 +10,8 @@ import com.marvel.characters.service.repository.external.response.callAPI
 import kotlinx.coroutines.Dispatchers
 import java.util.*
 
-class CharacterRepositoryImpl(private val service: CharacterRoute) :
-    CharacterRepository,
+class CharacterServiceImpl(private val service: CharacterRoute) :
+    CharacterService,
     Repository() {
 
     override suspend fun getCharacters(): ResponseWrapper<CharacterDataWrapper?> =

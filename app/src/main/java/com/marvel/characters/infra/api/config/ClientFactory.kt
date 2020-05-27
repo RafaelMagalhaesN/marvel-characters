@@ -4,8 +4,9 @@ import okhttp3.OkHttpClient
 
 object ClientFactory {
 
-    fun build(): OkHttpClient.Builder = OkHttpClient.Builder()
+    fun build(): OkHttpClient = OkHttpClient.Builder()
         .followRedirects(true)
         .followSslRedirects(true)
+        .build()
 
 }
