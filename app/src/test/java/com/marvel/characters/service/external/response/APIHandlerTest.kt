@@ -20,7 +20,7 @@ class APIHandlerTest {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `test when api handler wrapper success response`() {
+    fun `test when api handler success response`() {
         runBlockingTest {
             val successResponse: Boolean = true
             val httpResponse = callAPI(testCoroutineDispatcher) {
@@ -33,7 +33,7 @@ class APIHandlerTest {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `test when api handler wrapper has IOException`() {
+    fun `test when api handler has IOException`() {
         runBlockingTest {
             val httpResponse = callAPI(testCoroutineDispatcher) {
                 throw IOException()
@@ -45,7 +45,7 @@ class APIHandlerTest {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `test when api handler wrapper has HttpException`() {
+    fun `test when api handler has HttpException`() {
         runBlockingTest {
             val httpResponse = callAPI(testCoroutineDispatcher) {
                 throw HttpException(Response.error<Any>(404, ResponseBody.create(
@@ -61,7 +61,7 @@ class APIHandlerTest {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `test when api handler wrapper has Exception`() {
+    fun `test when api handler has Exception`() {
         runBlockingTest {
             val httpResponse = callAPI(testCoroutineDispatcher) {
                 throw Exception()

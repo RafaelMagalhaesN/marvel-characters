@@ -6,5 +6,5 @@ import com.marvel.characters.service.repository.external.response.ResponseWrappe
 interface CharacterRepository {
 
     /// Provide all marvel characters
-    suspend fun getCharacters(): ResponseWrapper<CharacterDataWrapper>
+    suspend fun getCharacters(): ResponseWrapper<CharacterDataWrapper?>
 }

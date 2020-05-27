@@ -3,11 +3,12 @@ package com.marvel.characters.infra.api.route
 import com.marvel.characters.infra.api.env.Parameter
 import com.marvel.characters.infra.api.env.Path
 import com.marvel.characters.service.model.CharacterDataWrapper
+import com.marvel.characters.service.repository.external.response.ResponseWrapper
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface MarvelAPI {
+interface CharacterRoute {
 
     /**
      * @description Fetches lists of comic characters with optional filters.
