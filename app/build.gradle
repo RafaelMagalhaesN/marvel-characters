@@ -20,6 +20,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -38,21 +42,58 @@ android {
         }
     }
     sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
+        main.kotlin.srcDirs = ['src/main/kotlin', 'src/main/java']
+        main.java.srcDirs = ['src/main/kotlin', 'src/main/java']
+        test.kotlin.srcDirs = ['src/test/kotlin', 'src/test/java']
+        test.java.srcDirs = ['src/test/kotlin', 'src/test/java']
     }
 }
 
+task jacocoTestReport(type: JacocoReport) {
+    reports {
+        xml.enabled = true
+    }
+
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+    def debugTree = fileTree(dir: "$project.buildDir/tmp/kotlin-classes/debug", excludes: fileFilter)
+    def mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories.from = files([mainSrc])
+    classDirectories.from = files([debugTree])
+
+    executionData.from = fileTree(dir: "$buildDir", includes: [
+            "jacoco/testDebugUnitTest.exec",
+            "outputs/code-coverage/connected/*coverage.ec"
+    ])
+}
+
 jacoco {
-    toolVersion = "0.8.4"
+    toolVersion = "0.8.5"
     reportsDir = file("$buildDir/reports")
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
+    test {
+        finalizedBy jacocoTestReport
+    }
+    testLogging {
+        exceptionFormat "full"
+        events "started", "skipped", "passed", "failed"
+        showStandardStreams true
+    }
 }
 
 sonarqube {
     properties {
         property "sonar.projectName", "marvel-characters"
         property "sonar.projectKey", "d28ead8486925b63f4150f96d44707dc29b88887"
-        property "sonar.tests", ["src/test/java", "src/test/koltin"]
+        property "sonar.host.url", "http://localhost:9000/"
+        property "sonar.language", "kotlin"
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${project.rootDir}/app/build/reports/jacocoTestReport/jacocoTestReport.xml"
+        property "sonar.tests", ["src/test/java", "src/test/kotlin"]
         property "sonar.test.inclusions", "**/*Test*/**"
         property "sonar.sourceEncoding", "UTF-8"
         property "sonar.sources", "src/main/java"
@@ -61,18 +102,6 @@ sonarqube {
                 '**/*test*/**,' +
                 '**/.gradle/**,' +
                 '**/R.class'
-        property "sonar.java.coveragePlugin", "jacoco"
-        property "sonar.jacoco.reportPath", "**/jacoco/*.exec"
-    }
-}
-
-tasks.withType(Test) {
-    jacoco.includeNoLocationClasses = true
-    jacoco.excludes = ['jdk.internal.*']
-    testLogging {
-        exceptionFormat "full"
-        events "started", "skipped", "passed", "failed"
-        showStandardStreams true
     }
 }
 
